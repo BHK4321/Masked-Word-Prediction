@@ -1,63 +1,48 @@
-# Masked Word Prediction NLP Model
+# TF-BERT Word Imputer
 
-## Overview
-This project implements a deep learning model for masked word prediction, a natural language processing task where the model predicts missing words in sentences. The current version achieves a 28% accuracy rate, with ongoing efforts to improve performance.
+This project implements a **Masked Language Model (MLM)** using `TFBertForMaskedLM` to predict missing words in sentences. It utilizes the **BERT-Large Uncased** model fine-tuned on a custom sentence dataset with dynamic token masking. The final model achieves a validation **perplexity of 8.48** and Test-Set **perplexity of 10.51**.
 
-## Model Architecture
-The model uses a recurrent neural network architecture with the following components:
-- Pre-trained GloVe word embeddings (100-dimensional)
-- Bidirectional GRU layers for capturing context from both directions
-- Layer normalization and dropout for regularization
-- Multiple stacked GRU layers for deeper feature extraction
-- Dense output layer with softmax activation
+### Model architecture:
+![Model Architecture](assets/architecture.png)
 
-## Technical Details
-- **Framework**: TensorFlow/Keras
-- **Word Embeddings**: GloVe 6B 100d
-- **Sequence Length**: 256 tokens (padded)
-- **Vocabulary Size**: 30,000 tokens
-- **Training Strategy**: Masked language modeling approach
-- **Current Accuracy**: 28%
+### Learning rate schedule:
+![lr_schedule](assets/lr_schedule.png)
+---
 
-## Data Processing
-The model processes input sentences by:
-1. Tokenizing text using Keras Tokenizer
-2. Padding sequences to uniform length
-3. Creating training examples by masking individual words
-4. Using the surrounding context to predict the masked word
+## 🧰 Features
 
-## Training
-The model is trained with:
-- Adam optimizer (learning rate: 0.001)
-- Sparse categorical cross-entropy loss
-- Early stopping based on validation loss
-- Batch size of 64
-- Maximum 10 epochs
+* Built using **TensorFlow** and **Hugging Face Transformers** with `TFBertForMaskedLM`.
+* Custom dataset loaded via Hugging Face `datasets` library.
+* Dynamic masking using `DataCollatorForLanguageModeling`.
+* Polynomial learning rate decay and Adam optimizer.
+* Early stopping for stability.
+* Final model saved in `assets/mlm_tf` directory.
 
-## Files
-- `Train Data.csv`: Contains training sentences
-- `Test Datas.csv`: Contains test sentences with masked words
-- `glove.6B.100d.txt`: Pre-trained GloVe word embeddings
-- `gru_model.h5`: Saved model weights
-- `submission.csv`: Generated predictions for evaluation
+---
 
-## Future Improvements
-Considering the current 28% accuracy, potential improvements include:
-- Experimenting with larger embedding dimensions
-- Adding attention mechanisms
-- Increasing model capacity (more layers/units)
-- Hyperparameter optimization
-- Data augmentation techniques
-- Alternative architectures (Transformer-based models)
+## 📊 Training Configuration
 
-## Requirements
-- TensorFlow 2.x
-- NumPy
-- Pandas
-- GloVe word embeddings
+```python
+model_name = "bert-large-uncased"
+max_seq_length = 128
+batch_size = 8
+num_train_epochs = 10
+learning_rate = 5e-6 (highest)
+mlm_probability = 0.15
+```
 
-## Usage
-1. Download GloVe embeddings
-2. Prepare training and test data in required CSV format
-3. Run the training script
-4. Generate predictions on masked sentences
+---
+## 🔹 Results
+
+* **Test Perplexity**: 10.51
+* **Model Size**: \~1.3GB (BERT-Large)
+
+---
+
+## 💼 Use Case
+
+This model can be used for:
+
+* Filling in blanks in educational apps
+* Grammatical sentence correction
+* Augmenting incomplete text data
