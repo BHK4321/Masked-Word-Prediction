@@ -38,6 +38,30 @@ mlm_probability = 0.15
 * **Model Size**: \~1.3GB (BERT-Large)
 
 ---
+### 📊 Perplexity Score
+**Perplexity** is a standard metric for evaluating language models. It measures how well the model predicts masked tokens in a sentence. Lower perplexity implies better generalization and stronger predictions.
+
+#### 🧮 Mathematical Formula
+```
+Perplexity = exp(CrossEntropyLoss)
+```
+This formula assumes the model outputs a probability distribution over the vocabulary for each masked token. The lower the average negative log-probability, the better the model.
+
+#### 📌 Why Use Perplexity?
+Perplexity is ideal for **Masked Language Modeling (MLM)** because:
+- It directly reflects how confidently the model predicts masked words.
+- It's interpretable: e.g., a perplexity of 8 means the model is as uncertain as randomly choosing among 8 likely tokens.
+- It's differentiable and aligns with the training objective (cross-entropy).
+
+#### ✅ Result in This Project
+After training a **BERT-large-uncased** MLM on a custom sentence dataset, the model achieved:
+```
+Validation Perplexity: 8.48
+```
+This indicates strong learning and reliable prediction of masked tokens in natural language sentences.
+
+----
+💡 You can use perplexity as an early stopping metric, or compare across datasets/models.
 
 ## 💼 Use Case
 
